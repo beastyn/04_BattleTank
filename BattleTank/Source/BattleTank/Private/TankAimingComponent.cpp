@@ -2,6 +2,7 @@
 
 #include "TankAimingComponent.h"
 #include"TankBarrel.h"
+#include"TankTurret.h"
 
 
 
@@ -54,8 +55,9 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	{
 		auto AimDirection = OutLaunchVelocity.GetSafeNormal();
 		MoveBarrel(AimDirection);
+		MoveTurret(AimDirection);
 		auto Time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution is found"), Time);
+		//UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution is found"), Time);
 	}
 	else
 	{
@@ -76,12 +78,24 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	
 }
 
+void UTankAimingComponent::MoveTurret(FVector AimDirection)
+{
+	//Take turret rotation this time
+
+	auto TurretRotation = Turret->GetForwardVector().Rotation();
+	auto AimAsRotator = AimDirection.Rotation();
+	auto DeltaRotator = AimAsRotator - TurretRotation;
+	Turret->TurretRotation(DeltaRotator.Yaw);
+}
+
 void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
+	if (!BarrelToSet) { return; }
 	Barrel = BarrelToSet;
 }
 
 void UTankAimingComponent::SetTurretReference(UTankTurret* TurretToSet)
 {
+	if (!TurretToSet) { return; }
 	Turret = TurretToSet;
 }
