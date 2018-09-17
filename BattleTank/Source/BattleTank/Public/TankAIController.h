@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
 #include "AIController.h"
 #include "Classes/Engine/World.h"
 #include "TankAIController.generated.h"
@@ -22,9 +21,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
-		ATank* GetAIControlledTank() const;
-		ATank* GetPlayerTank() const;
 
+	UPROPERTY(EditAnywhere)
+	float AcceptanceRadius = 30;
+
+
+	
 	
 	
 	
