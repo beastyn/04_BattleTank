@@ -3,7 +3,6 @@
 #include "Projectile.h"
 #include "TankProjectileMovement.h"
 
-
 // Sets default values
 AProjectile::AProjectile()
 {
