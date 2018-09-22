@@ -10,9 +10,7 @@ void  ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();
-	if (!ensure(AimingComponent)) { return; }
-	FoundAimingComponent(AimingComponent);
+	
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -23,20 +21,18 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-	
-}
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank())) { return; }
+	if (!GetPawn()) { return; }
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
 
 	FVector HitLocation; //Out parameter
 	if (GetSightRayHitLocation(HitLocation))
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	
 	}
 }
@@ -52,13 +48,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	
 	if (GetLookDirection(ScreenLocation, LookDirection))
 	{
-		if (GetLookVectorHit(LookDirection, OutHitLocation))
-		{
-			//UE_LOG(LogTemp, Warning, TEXT("Hit location is: %s"), *(OutHitLocation.ToString()));
-		}
+		return GetLookVectorHit(LookDirection, OutHitLocation);
 	}
 	
-	return true;
+	return false;
 
 }
 

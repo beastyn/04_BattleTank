@@ -7,7 +7,7 @@
 #include "Classes/Engine/World.h"
 #include "TankAIController.generated.h"
 
-class ATank;
+class UTankAimingComponent;
 /**
  * 
  */
@@ -20,10 +20,11 @@ public:
 	void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 
-private:
 
-	UPROPERTY(EditAnywhere)
-	float AcceptanceRadius = 30;
+protected:
+	
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	float AcceptanceRadius = 8000;
 
 
 	
