@@ -13,6 +13,22 @@ void  ATankPlayerController::BeginPlay()
 	
 }
 
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	if (InPawn)
+	{
+		auto PossesedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossesedTank)) { return; }
+		PossesedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnDeath);
+	}
+}
+
+void ATankPlayerController::OnDeath()
+{
+	StartSpectatingOnly();
+}
+
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -76,7 +92,7 @@ bool ATankPlayerController::GetLookVectorHit(FVector LookDirection, FVector& Hit
 		HitResult,
 		StartPoint,
 		EndPoint,
-		ECC_Visibility
+		ECC_Camera
 	))
 	{
 		HitLocation = HitResult.Location;

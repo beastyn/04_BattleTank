@@ -30,6 +30,13 @@ protected:
 private:
 	
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
+	bool GetLookVectorHit(FVector LookDirection, FVector& HitLocation) const;
+	
+	virtual void SetPawn(APawn* InPawn) override;
+
+	UFUNCTION()
+	void OnDeath();
 
 	UPROPERTY(EditAnywhere)
 		float CrossHairXLocation = 0.5f;
@@ -38,7 +45,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		float LineTraceRange = 1000000;
 	
-	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const;
-	bool GetLookVectorHit(FVector LookDirection, FVector& HitLocation) const;
+	
+
+	
 	
 };
